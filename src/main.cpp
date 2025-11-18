@@ -136,8 +136,6 @@ int main(void)
 
         testShader.bind();
         
-        //glm::mat4 view = mainCamera.getViewMatrix();
-        //glm::mat4 projection = mainCamera.getProjectionMatrix();
         glm::mat4 view = Camera::getActiveCamera()->getViewMatrix();
         glm::mat4 projection = Camera::getActiveCamera()->getProjectionMatrix();
         glUniformMatrix4fv(glGetUniformLocation(testShader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));;
