@@ -65,13 +65,13 @@ int main(void)
     SensitivityOptions mainSensitivityOptions = {2.5f, 0.1f, 45.0f}; // moveSpeed, mouseSensitivity, zoom
 
     Camera mainCamera("mainCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
-    mainCameraOptions.position = glm::vec3(0.0f, 3.0f, -5.0f);
+    mainCameraOptions.position = glm::vec3(2.0f, 3.0f, -9.0f);
     mainCameraOptions.yaw = 90.0f;
     Camera secondCamera("secondCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
     Camera::initWireframes();
 
-    Shader testShader("../src/shaders/vertex.txt", "../src/shaders/fragment.txt");
-    Texture testTexture("../src/assets/img/wall.jpg");
+    Shader testShader("src/shaders/vertex.txt", "src/shaders/fragment.txt");
+    Texture testTexture("src/assets/img/wall.jpg");
 
     float cube[] = {
         -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
@@ -135,14 +135,17 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         testShader.bind();
-        
-        glm::mat4 view = Camera::getActiveCamera()->getViewMatrix();
-        glm::mat4 projection = Camera::getActiveCamera()->getProjectionMatrix();
-        glUniformMatrix4fv(glGetUniformLocation(testShader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));;
+
+        Camera* activeCamera = Camera::getActiveCamera();
+        glm::mat4 view = activeCamera->getViewMatrix();
+        glm::mat4 projection = activeCamera->getProjectionMatrix();
+        glm::mat4 model = glm::mat4(1.0f);
+        glUniformMatrix4fv(glGetUniformLocation(testShader.getId(), "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(testShader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(testShader.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-        //glBindVertexArray(VAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         Camera::drawWireframes(testShader);
 
 
