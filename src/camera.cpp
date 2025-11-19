@@ -1,13 +1,19 @@
 #include "camera.h"
 
 // 16:9 & orange
-const float Camera::wireframes[] = {0.0f, 0.0f, 0.0f, 1.0f, 0.6f, 0.2f,
+const float Camera::wireframes[] = {
+                                    // wireframe
+                                    0.0f, 0.0f, 0.0f, 1.0f, 0.6f, 0.2f,
                                     1.0f, -0.45f, -0.8f, 1.0f, 0.6f, 0.2f,
                                     1.0f, 0.45f, -0.8f, 1.0f, 0.6f, 0.2f,
                                     1.0f, 0.45f, 0.8f, 1.0f, 0.6f, 0.2f,
-                                    1.0f, -0.45f, 0.8f, 1.0f, 0.6f, 0.2f};
+                                    1.0f, -0.45f, 0.8f, 1.0f, 0.6f, 0.2f,
+                                    // triangle
+                                    1.0f, 0.65f, 0.6f, 1.0f, 0.6f, 0.2f,
+                                    1.0f, 1.15f, 0.0f, 1.0f, 0.6f, 0.2f,
+                                    1.0f, 0.65f, -0.6f, 1.0f, 0.6f, 0.2f};
 
-const unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4};
+const unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4, 5, 6, 7};
 
 std::vector<Camera*> Camera::cameraList = {};
 unsigned int Camera::activeCamera = 0;
@@ -86,7 +92,8 @@ void Camera::drawWireframes(Shader& shader)
         model = glm::rotate(model, glm::radians(camera->yaw), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::rotate(model, glm::radians(camera->pitch), glm::vec3(0.0f, 0.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glDrawElements(GL_LINE_LOOP, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINE_LOOP, 12, GL_UNSIGNED_INT, (void*) 0);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(12 * sizeof(unsigned int)));
     }
 }
 

@@ -37,6 +37,7 @@ private:
     static const unsigned int indices[];
     static std::vector<Camera*> cameraList;
     static unsigned int activeCamera, wireframesVAO, wireframesVBO, wireframesEBO;
+
     glm::vec3 position, front, up, right, worldUp;
     float yaw, pitch, fov, aspectRatio, nearPlane, farPlane, moveSpeed, mouseSensitivity, scrollSensitivity;
 public:
