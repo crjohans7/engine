@@ -7,7 +7,7 @@ const float Camera::wireframes[] = {0.0f, 0.0f, 0.0f, 1.0f, 0.6f, 0.2f,
                                     1.0f, 0.45f, 0.8f, 1.0f, 0.6f, 0.2f,
                                     1.0f, -0.45f, 0.8f, 1.0f, 0.6f, 0.2f};
 
-const unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 4, 1};
+const unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4};
 
 std::vector<Camera*> Camera::cameraList = {};
 unsigned int Camera::activeCamera = 0;
@@ -23,9 +23,9 @@ moveSpeed(s.moveSpeed), mouseSensitivity(s.mouseSensitivity), scrollSensitivity(
     updateCameraVectors();
 
     // Limit number of cameras to 8
-    if (cameraList.size() < 8)
+    if (Camera::cameraList.size() < 8)
     {
-        cameraList.push_back(this);
+        Camera::cameraList.push_back(this);
     }
     else
     {
@@ -33,18 +33,27 @@ moveSpeed(s.moveSpeed), mouseSensitivity(s.mouseSensitivity), scrollSensitivity(
     }
 }
 
-Camera* Camera::getActiveCamera()
-{
-    if (cameraList.empty())
-    {
-        return nullptr;
-    }
-    return cameraList[activeCamera];
-}
+Camera* Camera::getActiveCamera() { return Camera::cameraList.empty() ? nullptr : Camera::cameraList[activeCamera]; }
 
-void Camera::setActiveCamera(unsigned int idx)
+std::vector<Camera*> Camera::getCameras() { return Camera::cameraList; }
+
+void Camera::setActiveCamera(unsigned int idx) { Camera::activeCamera = idx; }
+
+void Camera::setAspectRatio(float ratio) { aspectRatio = ratio; }
+
+glm::mat4 Camera::getViewMatrix() { return glm::lookAt(position, position + front, up); }
+
+glm::mat4 Camera::getProjectionMatrix() { return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane); }
+
+void Camera::updateCameraVectors()
 {
-    Camera::activeCamera = idx;
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front = glm::normalize(direction);
+    right = glm::normalize(glm::cross(front, worldUp));
+    up = glm::normalize(glm::cross(right, front));
 }
 
 void Camera::initWireframes()
@@ -65,6 +74,7 @@ void Camera::initWireframes()
 
 void Camera::drawWireframes(Shader& shader)
 {
+    shader.bind();
     glBindVertexArray(Camera::wireframesVAO);
     for (size_t i = 0; i < cameraList.size(); i++)
     {
@@ -80,24 +90,9 @@ void Camera::drawWireframes(Shader& shader)
     }
 }
 
-void Camera::cleanUp()
+void Camera::cleanWireframes()
 {
     glDeleteVertexArrays(1, &Camera::wireframesVAO);
     glDeleteBuffers(1, &Camera::wireframesVBO);
     glDeleteBuffers(1, &Camera::wireframesEBO);
-}
-
-glm::mat4 Camera::getViewMatrix() { return glm::lookAt(position, position + front, up); }
-
-glm::mat4 Camera::getProjectionMatrix() { return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane); }
-
-void Camera::updateCameraVectors()
-{
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front = glm::normalize(direction);
-    right = glm::normalize(glm::cross(front, worldUp));
-    up = glm::normalize(glm::cross(right, front));
 }

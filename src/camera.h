@@ -42,13 +42,15 @@ private:
 public:
     Camera(const char* name, const CameraOptions c, const ProjectionOptions p, const SensitivityOptions s);
     static Camera* getActiveCamera();
+    static std::vector<Camera*> getCameras();
     static void setActiveCamera(unsigned int idx);
-    static void initWireframes();
-    static void drawWireframes(Shader& shader);
-    static void cleanUp();
+    void setAspectRatio(float ratio);
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
     void updateCameraVectors();
+    static void initWireframes();
+    static void drawWireframes(Shader& shader);
+    static void cleanWireframes();
 };
 
 #endif

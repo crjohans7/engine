@@ -43,10 +43,12 @@ int main(void)
     glfwSetKeyCallback(window, keyCallback);
     // window re-sizing
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-    int width, height;
+
+    /* int width, height;
     glfwGetWindowSize(window, &width, &height);
     glfwSetWindowSizeLimits(window, width, height, GLFW_DONT_CARE, GLFW_DONT_CARE);
-    glfwSetWindowAspectRatio(window, width, height);
+    glfwSetWindowAspectRatio(window, width, height); */
+
     // load OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -64,7 +66,7 @@ int main(void)
     ProjectionOptions mainProjectionOptions = {45.0f, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 0.1f, 100.0f}; // fov, aspectRatio, nearPlane, farPlane
     SensitivityOptions mainSensitivityOptions = {2.5f, 0.1f, 45.0f}; // moveSpeed, mouseSensitivity, zoom
 
-    Camera mainCamera("mainCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
+    Camera godCamera("godCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
     mainCameraOptions.position = glm::vec3(2.0f, 3.0f, -9.0f);
     mainCameraOptions.yaw = 90.0f;
     Camera secondCamera("secondCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
@@ -152,7 +154,7 @@ int main(void)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    Camera::cleanUp();
+    Camera::cleanWireframes();
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 
@@ -207,4 +209,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     // matches OpenGl window to glfw window
     glViewport(0, 0, width, height);
+    // fix aspect ratio of active camera
+    Camera::getActiveCamera()->setAspectRatio((float)width / (float)height);
 }
