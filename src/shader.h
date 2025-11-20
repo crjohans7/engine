@@ -8,6 +8,7 @@ class Shader
 {
 private:
     unsigned int id;
+
 public:
     Shader(std::string vertexFilePath, std::string fragmentFilePath);
     ~Shader();

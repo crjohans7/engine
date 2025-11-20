@@ -33,13 +33,15 @@ struct SensitivityOptions {
 class Camera
 {
 private:
+    constexpr static size_t MAX_CAMERAS = 8;
+    static size_t activeCamera;
+    static std::vector<Camera*> cameraList;
     static const float wireframes[];
     static const unsigned int indices[];
-    static std::vector<Camera*> cameraList;
-    static unsigned int activeCamera, wireframesVAO, wireframesVBO, wireframesEBO;
-
+    static unsigned int wireframesVAO, wireframesVBO, wireframesEBO;
     glm::vec3 position, front, up, right, worldUp;
     float yaw, pitch, fov, aspectRatio, nearPlane, farPlane, moveSpeed, mouseSensitivity, scrollSensitivity;
+
 public:
     Camera(const char* name, const CameraOptions c, const ProjectionOptions p, const SensitivityOptions s);
     static Camera* getActiveCamera();

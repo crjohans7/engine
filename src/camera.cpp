@@ -1,7 +1,7 @@
 #include "camera.h"
 
 // 16:9 & orange
-const float Camera::wireframes[] = {
+constexpr float Camera::wireframes[] = {
                                     // wireframe
                                     0.0f, 0.0f, 0.0f, 1.0f, 0.6f, 0.2f,
                                     1.0f, -0.45f, -0.8f, 1.0f, 0.6f, 0.2f,
@@ -13,10 +13,10 @@ const float Camera::wireframes[] = {
                                     1.0f, 1.15f, 0.0f, 1.0f, 0.6f, 0.2f,
                                     1.0f, 0.65f, -0.6f, 1.0f, 0.6f, 0.2f};
 
-const unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4, 5, 6, 7};
+constexpr unsigned int Camera::indices[] = {0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4, 5, 6, 7};
 
 std::vector<Camera*> Camera::cameraList = {};
-unsigned int Camera::activeCamera = 0;
+size_t Camera::activeCamera = 0;
 unsigned int Camera::wireframesVAO = 0;
 unsigned int Camera::wireframesVBO = 0;
 unsigned int Camera::wireframesEBO = 0;
@@ -28,8 +28,7 @@ moveSpeed(s.moveSpeed), mouseSensitivity(s.mouseSensitivity), scrollSensitivity(
 {
     updateCameraVectors();
 
-    // Limit number of cameras to 8
-    if (Camera::cameraList.size() < 8)
+    if (Camera::cameraList.size() < Camera::MAX_CAMERAS)
     {
         Camera::cameraList.push_back(this);
     }
