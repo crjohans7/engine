@@ -4,8 +4,8 @@
 #include "camera.h"
 
 // OpenGL 3.3+ GLFW 3.3+ GLSL 3.3+
-const unsigned int SCREEN_WIDTH = 800;
-const unsigned int SCREEN_HEIGHT = 600;
+constexpr unsigned int SCREEN_WIDTH = 800;
+constexpr unsigned int SCREEN_HEIGHT = 600;
 
 static void errorCallback(int error, const char* description);
 static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -79,7 +79,7 @@ int main(void)
     Shader testShader("../src/shaders/vertex.txt", "../src/shaders/fragment.txt");
     Texture testTexture("../src/assets/img/wall.jpg");
 
-    float cube[] = {
+    constexpr float cube[] = {
         -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
          0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
          0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
