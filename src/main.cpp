@@ -29,6 +29,9 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+    // opengl multisample anti-aliasing
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
     // create window
     GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Game", NULL, NULL);
     if (!window)
@@ -60,6 +63,7 @@ int main(void)
     glfwSwapInterval(1);
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
 
     // Main camera original settings - points towards +x
     CameraOptions mainCameraOptions = {glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f}; // position, worldUp, yaw, pitch
@@ -72,8 +76,8 @@ int main(void)
     Camera secondCamera("secondCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
     Camera::initWireframes();
 
-    Shader testShader("src/shaders/vertex.txt", "src/shaders/fragment.txt");
-    Texture testTexture("src/assets/img/wall.jpg");
+    Shader testShader("../src/shaders/vertex.txt", "../src/shaders/fragment.txt");
+    Texture testTexture("../src/assets/img/wall.jpg");
 
     float cube[] = {
         -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
