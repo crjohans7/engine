@@ -62,8 +62,7 @@ unsigned int Shader::loadShader(std::string filepath, unsigned int type)
     file.close();
 
     // Compile shader based on type
-    unsigned int shader;
-    shader = glCreateShader(type);
+    unsigned int shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderSource, NULL);
     glCompileShader(shader);
     // Compile check
