@@ -33,7 +33,7 @@ int main(void)
     glfwWindowHint(GLFW_SAMPLES, 4);
 
     // create window
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL Game", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Render Window", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
