@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 4.0.0)
-project(openGl_game)
+project(render_engine)
+
+set(CMAKE_CXX_STANDARD           11)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS        OFF)
+
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
-add_executable(openGl_game 
+add_executable(${PROJECT_NAME} 
     src/config.h 
     src/main.cpp 
     src/glad.c
@@ -15,8 +20,6 @@ add_executable(openGl_game
     src/camera.h
     src/camera.cpp)
 
-target_include_directories(openGl_game PRIVATE dependencies)
+target_include_directories(${PROJECT_NAME} PRIVATE dependencies)
 
-target_link_libraries(openGl_game glfw OpenGL::GL)
-
-set(CMAKE_CXX_FLAGS "-std=c++11")
+target_link_libraries(${PROJECT_NAME} glfw OpenGL::GL)
