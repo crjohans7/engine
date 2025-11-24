@@ -9,7 +9,7 @@ private:
     unsigned int id;
 
 public:
-    Texture(const char* textureFilePath);
+    Texture(const char* textureFilepath);
     ~Texture();
     unsigned int getId();
 };
