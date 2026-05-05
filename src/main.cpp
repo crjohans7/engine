@@ -47,11 +47,6 @@ int main(void)
     // window re-sizing
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    /* int width, height;
-    glfwGetWindowSize(window, &width, &height);
-    glfwSetWindowSizeLimits(window, width, height, GLFW_DONT_CARE, GLFW_DONT_CARE);
-    glfwSetWindowAspectRatio(window, width, height); */
-
     // load OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -65,19 +60,19 @@ int main(void)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
 
-    // Main camera original settings - points towards +x
+    // Main camera original settings - alligned with z-axis
     CameraOptions mainCameraOptions = {glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f}; // position, worldUp, yaw, pitch
     ProjectionOptions mainProjectionOptions = {45.0f, (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT, 0.1f, 100.0f}; // fov, aspectRatio, nearPlane, farPlane
     SensitivityOptions mainSensitivityOptions = {2.5f, 0.1f, 45.0f}; // moveSpeed, mouseSensitivity, zoom
 
     Camera godCamera("godCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
-    mainCameraOptions.position = glm::vec3(2.0f, 3.0f, -9.0f);
-    mainCameraOptions.yaw = 90.0f;
+    mainCameraOptions.position = glm::vec3(2.0f, 1.0f, 0.0f);
+    mainCameraOptions.yaw = 180.0f;
     Camera secondCamera("secondCamera", mainCameraOptions, mainProjectionOptions, mainSensitivityOptions);
     Camera::initWireframes();
 
     Shader testShader("../src/shaders/vertex.txt", "../src/shaders/fragment.txt");
-    Texture testTexture("../src/assets/img/wall.jpg");
+    Texture testTexture("../src/assets/textures/wall.jpg");
 
     constexpr float cube[] = {
         -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
